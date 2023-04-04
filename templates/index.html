@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Population Data</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Population Data</h1>
+    <h2>Here is the table with population data:</h2>
+    <table>
+        {{ table | safe }}
+    </table>
+    <h2>Here is the bar chart of the top 10 countries by population (2023):</h2>
+    <img src="data:image/png;base64,{{ img_data }}" alt="Population Bar Chart">
+</body>
+</html>
