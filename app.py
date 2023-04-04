@@ -52,7 +52,7 @@ def index():
 
     with app.app_context():
         # 创建数据库连接
-        conn = pymysql.connect(host='localhost', port=3306, user='root', password='arlington2019', database='population')
+        conn = pymysql.connect(host='choosinglove.mysql.pythonanywhere-services.com', port=3306, user='choosinglove', password='arlington2019', database='choosinglove$population')
 
         # 读取数据
         cursor = conn.cursor()

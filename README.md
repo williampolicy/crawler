@@ -202,6 +202,7 @@ CREATE TABLE population_data (
 - 修改用户名choosinglove。
 - host=choosinglove.mysql.pythonanywhere-services.com; 
 - database='choosinglove$population'
+- 需要修改两处。一处是开始建立。第二处，是读取。因此需要两处。
 
 在 PythonAnywhere 中，您可以使用 MySQL 控制台或 phpMyAdmin 来创建表。下面是两种方法的步骤：
 
