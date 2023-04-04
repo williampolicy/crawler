@@ -195,3 +195,44 @@ CREATE TABLE population_data (
 1.更新主文件  app.py
 2.注意数据库的密码更新。
 
+- Pythonanywere: 
+1. 建立数据库
+2. 建立表
+3. 更改服务器数据库的名称，
+- 修改用户名choosinglove。
+- host=choosinglove.mysql.pythonanywhere-services.com; 
+- database='choosinglove$population'
+
+在 PythonAnywhere 中，您可以使用 MySQL 控制台或 phpMyAdmin 来创建表。下面是两种方法的步骤：
+
+方法一：使用 MySQL 控制台
+登录到 PythonAnywhere，进入控制台。
+
+输入 mysql -u your_username -p -h your_database_host.mysql.pythonanywhere-services.com 并按回车。将 your_username 和 your_database_host 替换为您的实际 PythonAnywhere 用户名和数据库主机名。
+
+当提示输入密码时，输入您的数据库密码并按回车。
+
+输入 USE population; 并按回车，以选择 population 数据库。
+
+输入以下 SQL 语句以创建 population_data 表：
+
+sql
+Copy code
+CREATE TABLE population_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    country_area VARCHAR(255) NOT NULL,
+    population_2023 VARCHAR(255) NOT NULL
+);
+按回车执行 SQL 语句。此时，您应该已经成功创建了 population_data 表。
+
+USE choosinglove$population
+Database changed
+mysql> CREATE TABLE population_data (
+    ->     id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     country_area VARCHAR(255) NOT NULL,
+    ->     population_2023 VARCHAR(255) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+-
+
