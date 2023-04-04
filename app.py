@@ -1,94 +1,92 @@
 from flask import Flask, render_template
 import pymysql
-import csv
-from prettytable import PrettyTable
+import base64
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from io import BytesIO
-import base64
+from prettytable import PrettyTable
+import csv
+import requests
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    # 爬取人口数据并保存到 CSV 文件和 MySQL 数据库的逻辑
-    # ...
 
-    # 从 MySQL 数据库中读取数据并展示的逻辑
-    # ...
+    # 创建数据库连接
+    conn = pymysql.connect(host='localhost', port=3306, user='root', password='arlington2019', database='population')
 
-    # 从 CSV 文件中读取数据并创建表格
-    table = create_table()
-    img = create_bar_chart()
-    img_base64 = base64.b64encode(img.getvalue()).decode('ascii')  # 需要做格式转换
+    # 发送HTTP请求并解析网页内容
+    url = "https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
 
+    # 在Wikipedia页面中查找具有指定类名的表格
+    table = soup.find("table", {"class": "wikitable"})
 
+    with open("population.csv", "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        
+        for row in table.select("tr"):
+            row_data = []
+            for cell in row.find_all(["th", "td"]):
+                row_data.append(cell.text.strip())
+            writer.writerow(row_data)
 
-    return render_template('index.html', table=table.get_html_string(), img_data=img_base64)
-
-def is_int(value):
-    try:
-        int(value)
-        return True
-    except ValueError:
-        return False
-
-def create_table():
-    data = []
-    with open('output_wiki.csv', 'r') as f:
+    with open("population.csv", "r", newline="", encoding="utf-8") as f:
         reader = csv.reader(f)
+        next(reader)  # 跳过表头
         for row in reader:
-            data.append(row)
+            country_area = row[0]
+            population_2023 = row[4].replace(',', '')
+            sql = f"INSERT INTO population_data (country_area, population_2023) VALUES ('{country_area}', '{population_2023}')"
+            with conn.cursor() as cursor:
+                cursor.execute(sql)
+        conn.commit()
 
-    data.pop(0)  # 删除表头行
 
-    filtered_data = [row for row in data[:10] if is_int(row[4].replace(',', ''))]
+    # 关闭数据库连接
+    conn.close()
 
-    # 创建 PrettyTable 实例
-    table = PrettyTable()
-    table.field_names = ["Country", "Population (2023)"]
-    for row in filtered_data:
-        table.add_row([row[0], row[4]])
+    with app.app_context():
+        # 创建数据库连接
+        conn = pymysql.connect(host='localhost', port=3306, user='root', password='arlington2019', database='population')
 
-    return table
+        # 读取数据
+        cursor = conn.cursor()
+        cursor.execute("SELECT country_area, population_2023 FROM population_data ORDER BY population_2023 DESC LIMIT 10")
+        rows = cursor.fetchall()
 
-def create_bar_chart():
-    with open('output_wiki.csv', 'r') as f:
-        reader = csv.reader(f)
-        data = [row for row in reader]
+        # 创建 PrettyTable 实例
+        table = PrettyTable()
+        table.field_names = ["Country", "Population (2023)"]
+        for row in rows:
+            print(f"Country: {row[0]}, Population: {row[1]}")
+            table.add_row([row[0], row[1]])
 
-    data.pop(0)  # 删除表头行
-    # 测试展示
-    # for row in data:
-    #     category = row[0]
-    #     value = row[4]
-    #     print(f"{category}: {value}")
+        # 绘制柱状图
+        countries = [row[0] for row in rows]
+        population_2023 = [int(row[1].replace(',', '')) for row in rows]
 
-    def is_int(value):
-        try:
-            int(value)
-            return True
-        except ValueError:
-            return False
+        fig = plt.figure()
+        plt.bar(countries, population_2023)
+        plt.xlabel("Countries")
+        plt.ylabel("Population (2023)")
+        plt.xticks(rotation=45)
 
-    filtered_data = [row for row in data if is_int(row[4].replace(',', ''))]
-    sorted_data = sorted(filtered_data, key=lambda x: int(x[4].replace(',', '')), reverse=True)[:10]
+        # 将绘制好的图像以二进制数据的形式嵌入到 HTML 模板中
+        img = BytesIO()
+        fig.savefig(img, format='png')
+        img.seek(0)
+        img_data = base64.b64encode(img.getvalue()).decode('ascii')
 
-    countries = [row[0] for row in sorted_data]
-    population_2023 = [int(row[4].replace(',', '')) for row in sorted_data]
+        # 关闭数据库连接
+        cursor.close()
+        conn.close()
 
-    fig = plt.figure()
-    plt.bar(countries, population_2023)
-    plt.xlabel("Countries")
-    plt.ylabel("Population (2023)")
-    plt.xticks(rotation=45)
-
-    img = BytesIO()
-    fig.savefig(img, format='png')
-    img.seek(0)
-    return img
-
+        return render_template('index.html', table=table.get_html_string(), img_data=img_data)
 
 if __name__ == '__main__':
     app.run(debug=True)

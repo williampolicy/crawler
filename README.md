@@ -192,4 +192,6 @@ CREATE TABLE population_data (
 成功! 很好！ 非常感谢。下面我们希望将本地成功的代码，移植到Pythonanywhere ,并在www.choosinglove.ai 中展示出来。我现在通过git push 而后在控制台pull下来，并安装必要的关联程序，并建立数据库，以及表。而后修改工作目录，后进行运行。
 ---
 
+1.更新主文件  app.py
+2.注意数据库的密码更新。
 
