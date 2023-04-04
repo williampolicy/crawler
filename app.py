@@ -16,7 +16,7 @@ app = Flask(__name__)
 def index():
 
     # 创建数据库连接
-    conn = pymysql.connect(host='localhost', port=3306, user='root', password='arlington2019', database='population')
+    conn = pymysql.connect(host='choosinglove.mysql.pythonanywhere-services.com', port=3306, user='choosinglove', password='arlington2019', database='choosinglove$population')
 
     # 发送HTTP请求并解析网页内容
     url = "https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)"
@@ -28,7 +28,7 @@ def index():
 
     with open("population.csv", "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        
+
         for row in table.select("tr"):
             row_data = []
             for cell in row.find_all(["th", "td"]):
