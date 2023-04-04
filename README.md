@@ -134,4 +134,62 @@ python3 readsql_table_fig.py
 -push 一下. 
 
 
+-----
+在pyhonanywhere上，完成了Crawler 的Table 与figure的展示。 很清楚。
+
+下面，我们希望进行，数据库的建设。
+可以通过Sql 对数据进行读取。
+- 下面我们看能否通过爬虫，建立Sql,而后读取。
+-
+
+
+可否在Bash内建立一个population1的数据库
+mysql -u root -p
+CREATE DATABASE population1;
+
+我们之前，用这个程序，当时是实现了数据的抓取的。
+
+```
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+url = "https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)"
+
+response = requests.get(url)
+soup = BeautifulSoup(response.text, "html.parser")
+
+# 在Wikipedia页面中查找具有指定类名的表格
+table = soup.find("table", {"class": "wikitable"})
+
+data = []
+for row in table.select("tr"):
+    row_data = []
+    for cell in row.find_all(["th", "td"]):
+        row_data.append(cell.text.strip())
+    data.append(row_data)
+
+# 将数据保存为表格
+df = pd.DataFrame(data)
+df.to_csv("output_wiki1.csv", index=False)
+```
+
+根据您提供的源码和输出，可以看到这个版本的程序已经成功地抓取并保存了数据。我注意到这个版本与之前版本的主要区别在于抓取表格的方法。在这个版本中，您使用了 table.select("tr") 代替之前的 table.find_all("tr")。另外，这个版本同时提取了表格中的<th>和<td>元素。
+
+您可以尝试将之前版本的代码修改为如下形式，看看是否能解决问题：
+
+python-OK解决。使用Crawler_wiki的方法。可以
+
+-
+我们需要创建一个表。
+CREATE TABLE population_data (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    country_area VARCHAR(255) NOT NULL,
+    population_2023 VARCHAR(255) NOT NULL
+);
+
+---
+成功! 很好！ 非常感谢。下面我们希望将本地成功的代码，移植到Pythonanywhere ,并在www.choosinglove.ai 中展示出来。我现在通过git push 而后在控制台pull下来，并安装必要的关联程序，并建立数据库，以及表。而后修改工作目录，后进行运行。
+---
+
 

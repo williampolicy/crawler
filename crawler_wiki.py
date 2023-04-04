@@ -19,4 +19,4 @@ for row in table.select("tr"):
 
 # 将数据保存为表格
 df = pd.DataFrame(data)
-df.to_csv("output_wiki.csv", index=False)
+df.to_csv("output_wiki1.csv", index=False)
