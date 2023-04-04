@@ -129,6 +129,9 @@ python3 readsql_table_fig.py
 
 为方便起见，我们整合一下：
 将抓取数据、数据转为Sql语言，读取sql文件都按照Flask的结构完成
+-完成1：output_wiki.csv-->app_tab_fig_v3.py  OK.
+下面我们读取Sql 看是否可以。
+-push 一下. 
 
 
 
