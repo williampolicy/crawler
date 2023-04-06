@@ -268,4 +268,66 @@ conn.commit()
 线面抑制到pythonanwhere.
 需要做的是：1. 完成 服务器的代表 隐藏修改。 （两处）-对应网络服务器。
 2. push --pull。
-3. 运行。
+3. 运行。 -WELL DONE。 非常好！
+-----
+
+完全正确，非常感谢!  过去我们展示了一个从wiki的网站上，抓取人口数据，并csv，并建立数据库，而后在网站上进行展示。已经成功。下一步，我们考虑换一种数据进行上述流程。 我们拟选择kids reading books儿童图书,作为一个数据。 因此，请帮助我给出一个具有儿童图书数据的网站或数据库，我们先来抓取下，测试下吧
+
+-
+ bk_scrape_web_read_sql_function_well_done
+ -├── read_sql_v1.py
+├── scrape_story_berries_simple_v5.py
+└── story_list.html
+can work. 
+----
+<span class="author main-font vcard"><a class="url fn n" href="https://www.storyberries.com/author/jade-maitre/">Jade Maitre</a></span>
+</span>
+
+<span class="author main-font vcard"><a class="url fn n" href="https://www.storyberries.com/author/andrea-kaczmarek/">Andrea Kaczmarek</a></span>
+</span>
+
+---表格清理后，就会有更新数据。否则就是增加。导致数据重复。
+
+
+是的，你可以选择前5副图片进行处理。你可以使用Python的Pillow库来打开和处理图像，然后使用urlretrieve函数将处理后的图像保存到本地目录中。
+
+-----
+
+完成，整理下程序：
+python3 scrape_story_berries_fig_v2.py 
+csv: title,author,link,image_url
+查看数据库:
+
+
+1. 抓数据
+cp scrape_story_berries_fig_v2.py 1_crawler_to_csv.py
+python3 1_crawler_to_csv.py 
+
+2. 处理和调整数据
+stories_image.csv:  title,author,link,image_url
+
+修改图片格式
+stories_image.csv-->stories_image_small.csv
+
+
+3. 存入数据库
+python3 3_csv_to_sql.py 
+
+4. 读取数据库
+4_sql_to_html.py
+
+
+
+<style>
+    .right-image {
+        float: right;
+        margin-left: 50%;
+    }
+</style>
+
+<!-- ... -->
+
+<img src='{image_url}' alt='{title}' class='right-image'>
+
+
+
