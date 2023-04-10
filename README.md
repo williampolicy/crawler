@@ -330,4 +330,9 @@ python3 3_csv_to_sql.py
 <img src='{image_url}' alt='{title}' class='right-image'>
 
 
+OK  well done.
+---20230409. 19:33
+上传，并配置到 pythonanywhere
+1. 本地测试一下 
+
 

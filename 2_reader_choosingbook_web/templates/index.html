@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Sentiment Scores Bubble Chart</title>
+</head>
+<body>
+    <h1>Book Sentiment Scores Bubble Chart</h1>
+    <!--  <form method="POST" action="/">
+        <label for="reader_input">Please enter your preferences:</label>
+        <input type="text" id="reader_input" name="reader_input" required>
+        <input type="submit" value="Submit">
+    </form> -->
+    <form action="/result" method="POST">
+        <label for="reader_input">输入你想输入的内容：</label>
+        <input type="text" id="reader_input" name="reader_input">
+        <button type="submit">提交</button>
+    </form>
+
+
+    {% if chart_file %}
+    <iframe src="{{ url_for('static', filename=chart_file) }}" width="100%" height="600px" frameborder="0"></iframe>
+    {% endif %}
+</body>
+</html>
+

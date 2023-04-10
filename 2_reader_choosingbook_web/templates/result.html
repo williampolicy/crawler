@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+</head>
+<body>
+    <h1>Book Sentiment Scores</h1>
+
+    <!-- 添加输入框和提交按钮 -->
+    <form action="/result" method="post">
+        <label for="reader_input">输入你想输入的内容：</label>
+        <input type="text" id="reader_input" name="reader_input" required>
+        <input type="submit" value="提交">
+    </form>
+
+    <!-- 在这里插入用于显示气泡图的元素 -->
+    <div>
+        <iframe src="{{ url_for('static', filename='bubble_chart.html') }}" width="100%" height="800px" frameborder="0"></iframe>
+    </div>
+</body>
+</html>
